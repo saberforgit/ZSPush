@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin id="cordova-plugin-push" version="0.0.1" 
+        xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>ZSPush</name>
+    <description>Description</description>
+    <js-module name="push" src="www/Push.js">
+        <clobbers target="Push"/>
+    </js-module>
+    <platform name="android">
+        <config-file parent="/*" target="res/xml/config.xml">
+			    <feature name="Push">
+        <param name="android-package" value="com.zsmarter.push.Push" />
+		  <param name="onload" value="true" />
+    </feature>
+        </config-file>
+		<config-file target="AndroidManifest.xml" parent="/manifest">
+		<uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+		</config-file>
+       <config-file target="AndroidManifest.xml" parent="/manifest/application">
+	          <receiver android:name="com.zsmarter.push.PushReceiver" >
+            <intent-filter>
+                <action android:name="com.minxing.kit.push.message" />
+                <action android:name="com.minxing.kit.push.launch" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.minxing.kit.push.MXPushService"
+            android:exported="true"
+            android:process=":mxpush" />
+    </config-file>
+        <source-file src="src/android/com/zsmarter/push" target-dir="src/com/zsmarter/push/"/>
+        <source-file src="libs/armeabi/" target-dir="libs" />
+        <source-file src="libs/fastjson-1.1.31.jar" target-dir="libs" />
+        <source-file src="libs/mxpush-sdk-4.0.0.009.jar" target-dir="libs" />
+    </platform>
+</plugin>
